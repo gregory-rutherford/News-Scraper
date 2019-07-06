@@ -10,6 +10,7 @@ const Content = (props) => {
                 <tr>{props.image}</tr>
             </th>
         </table>
+        
     </div>
     )
 };

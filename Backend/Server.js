@@ -5,9 +5,11 @@ var mongojs = require("mongojs");
 // Require axios and cheerio. This makes the scraping possible
 var axios = require("axios");
 var cheerio = require("cheerio");
+var cors = require("cors");
 
 // Initialize Express
 var app = express();
+app.use(cors());
 
 // Database configuration
 var databaseUrl = "scraper";
@@ -19,7 +21,7 @@ db.on("error", function(error) {
   console.log("Database Error:", error);
 });
 
-app.get("/", function(req, res) {
+app.get("/api/data", function(req, res) {
   db.scrapper.find({}, (err, data) => res.json(data));
 });
 
@@ -52,6 +54,6 @@ app.get("/scrape", function(req, res) {
 
 
 // Listen on port 3000
-app.listen(3000, function() {
-  console.log("App running on port 3000!");
+app.listen(3002, function() {
+  console.log("App running on port 3002!");
 });
