@@ -6,32 +6,29 @@ import ScrapeBtn from "./ScrapeBtn";
 class App extends React.Component{
 
     state = {
-        loadedData: [],
-        dummyData: [{
-            title:"a title",
-            link:"the link url",
-            image:"the image url",
-            id: 1
-        }, {
-            title: "test1",
-            link: "test2",
-            image: "test3",
-            id: 2
-        }]
+        loadedData: []
     }
 
-    onComponentDidMount = () => {
-        return fetch (`http://localhost:3002/api/data`)
-        .then(res => res.json())
-        .then(returned => this.setState({loadedData: returned}));
-    }
+    // onComponentDidMount = () => {
+    //     fetch (`http://localhost:3002/api/data`)
+    //     .then(res => res.json())
+    //     .then(returned => this.setState({loadedData: returned}));
+    // }
 
     scrape = () => {
-        fetch (`http://localhost:3002/api/data`)
+        fetch (`http://localhost:3002/scrape`)
         .then(res => res.json())        
         .then(returned => this.setState({loadedData: returned}));
         console.log(this.state); 
+        this.displayArticles();
     }
+
+    displayArticles = () => {
+        fetch (`http://localhost:3002/api/data`)
+        .then(res => res.json())
+        .then(returned => this.setState({loadedData: returned}));
+    }
+    
 
     render(){
         return(

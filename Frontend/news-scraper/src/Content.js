@@ -7,7 +7,7 @@ const Content = (props) => {
             <th>
                 <tr>{props.title}</tr>
                 <tr>{props.link}</tr>
-                <tr>{props.image}</tr>
+                <tr><img src={props.image} alt="article"></img></tr>
             </th>
         </table>
         
