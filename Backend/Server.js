@@ -17,15 +17,6 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true}));
 app.use(express.json());
 
-// Database configuration
-// var databaseUrl = "scraper";
-// var collections = ["scrapedData"];
-
-// Hook mongojs configuration to the db variable
-// var db = mongojs(databaseUrl, collections);
-// db.on("error", function(error) {
-//   console.log("Database Error:", error);
-// });
 
 mongoose.connect("mongodb://localhost/scraper", { useNewUrlParser: true});
 
@@ -46,23 +37,17 @@ app.get("/scrape", function(req, res) {
     // var results = [];
     var results = {};
     $("article").each(function(i, element) {
-    //   var title = $(element)
       results.title = $(this)
         .children()
         .text();
-    //   var link = $(element)
         results.link = $(this)
         .find("a")
         .attr("href");
-    //   var image = $(element)
         results.image = $(this)
         .find("img")
         .attr("src");  
 
-    //   results.push({
-    //     title: title,
-    //     link: link,
-    //     image: image
+  
     db.Article.create(results)
     .then(function(dbArticle) {
         console.log(dbArticle);
@@ -74,12 +59,6 @@ app.get("/scrape", function(req, res) {
       });
       console.log(results);
     });
-
-    // Log the results once you've looped through each of the elements found with cheerio
-    // db.scrapper.insert(results, (err, data) => {
-    //   if (err) return res.send("there was an error");
-    //   res.send("it worked");
-    // });
   });
 
 
