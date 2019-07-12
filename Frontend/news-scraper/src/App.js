@@ -4,80 +4,85 @@ import Content from "./Content";
 import ScrapeBtn from "./ScrapeBtn";
 import Header from "./Header";
 
-class App extends React.Component{
+class App extends React.Component {
+  state = {
+    loadedData: [],
+    author: "",
+    comment: ""
+  };
 
-    state = {
-        loadedData: [],
-        author: "Author",
-        comment: "Comment"
-    }
+  componentDidMount = () => {
+    this.displayArticles();
+  };
 
-    componentDidMount = () => {
-        this.displayArticles();
-    }
+  //called when you press "scrapeBtn"
+  scrape = () => {
+    fetch(`http://localhost:3002/scrape`).then(res => res.json());
+    console.log(this.state);
+    this.displayArticles();
+  };
 
-    
+  displayArticles = () => {
+    fetch(`http://localhost:3002/api/data`)
+      .then(res => res.json())
+      .then(returned => this.setState({ loadedData: returned }));
+    console.log("display articles is working");
+  };
 
-    //called when you press "scrapeBtn"
-    scrape = () => {
-        fetch (`http://localhost:3002/scrape`)
-        .then(res => res.json());        
-        // .then(returned => this.setState({loadedData: returned}));
-        console.log(this.state); 
-        this.displayArticles();
-    }
+  handleInputChange = event => {
+    // Getting the value and name of the input which triggered the change
+    const name = event.target.name;
+    const value = event.target.value;
+    // Updating the input's state
+    this.setState({
+      [name]: value
+    });
+  };
 
-    displayArticles = () => {
-        fetch (`http://localhost:3002/api/data`)
-        .then(res => res.json())
-        .then(returned => this.setState({loadedData: returned}));
-        console.log("display articles is working")
-    }
-    
+  getComment = id => {
+    //get id of article from key attribute
+    console.log(id); 
+    fetch(`http://localhost:3002/api/data/${id}`)
+    .then(res => console.log(res));
+  }
 
-    // getCommentValues = event => {
-    //     const author = this.event.target.name;
-    //     const comment = this.event.target.value;
-    //     this.setState({ [this.name]: this.value});
-    // }
+  addComment = id => {
+    const inputs = {author: this.state.author, body: this.state.comment}
+    const options = {
+      headers: { "Content-Type": "application/json" },
+      method: "POST",
+      body: JSON.stringify(inputs)
+    };
+    fetch(`http:localhost:3002/api/data/${id}`, options)
+      .then(function(data) {
+        console.log("Request success: ", data);
+      })
+      .catch(function(error) {
+        console.log("Request failure: ", error);
+      });
+  };
 
-    // postComment = (event) => {
-    //     event.preventDefault();
-    //     const author2 = this.state.author;
-    //     const comment2 = this.state.comment;
-    //     const artId = this.props._id;
-    //     const options = {
-    //         headers: {"Content-Type": "application/json"},
-    //         method: "POST",
-    //         body: author2, comment2,
-    //         }
-    //         fetch(`http://localhost:3002/api/data/${artId}`, options)
-    //         .then(res => res.json())
-    //         .then(res => console.log(res));
-    // }
+  //write a function that grabs values from the text input, grabs the id of the selected article, and make a post to the db
 
-    render(){
-        return(
-            <Wrapper>
-                <Header />
-                <ScrapeBtn 
-                clicky={this.scrape}
-                />
-                {this.state.loadedData.map(item => (
-                <Content
-                title={item.title}
-                link={item.link}
-                image={item.image}
-                key={item._id}
-                clickPost={this.postComment}
-                commentValues={this.getCommentValues}
-                /> 
-                )
-                )}
-            </Wrapper>
-        )
-    }
-
+  render() {
+    return (
+      <Wrapper>
+        <Header />
+        <ScrapeBtn clicky={this.scrape} />
+        {this.state.loadedData.map(item => (
+          <Content
+            title={item.title}
+            link={item.link}
+            image={item.image}
+            key={item._id}
+            id={item._id}
+            change={this.handleInputChange}
+            comment={this.getComment}
+          />
+        ))}
+      </Wrapper>
+    );
+  }
 }
 
 export default App;
