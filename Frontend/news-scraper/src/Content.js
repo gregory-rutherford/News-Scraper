@@ -4,7 +4,7 @@ import "./CSS/ContentStyle.css";
 const Content = props => {
  
   return (
-    <div className="main" key={props._id} id={props._id}>
+    <div className="main" key={props._id} id={props._id} >
       <table>
         <thead>
           <tr>
@@ -24,13 +24,17 @@ const Content = props => {
         </tr>
         </tbody>
       </table>
+      <div className="commentSection" onClick={()=> props.comment(props.id)}>
+        <p>Click to see comments</p>
+        <p>{props.author + ": "}  {props.body}</p>
+      </div>
 
       <div className="comment"></div>
       <input type="text" onChange={(event)=>props.change(event)} name="author" ></input>
       <input type="text" onChange={(event)=>props.change(event)} name="comment" ></input>
-      <button onClick={()=> props.comment(props.id)}>Submit</button>
-    </div>
+      <button onClick={()=> props.addComment(props.id)}>Submit</button>
 
+    </div>
   );
 };
 

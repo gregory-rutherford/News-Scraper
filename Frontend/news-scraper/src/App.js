@@ -8,7 +8,9 @@ class App extends React.Component {
   state = {
     loadedData: [],
     author: "",
-    comment: ""
+    comment: "",
+    returnedAuthor: "",
+    returnedComment: "",
   };
 
   componentDidMount = () => {
@@ -26,7 +28,6 @@ class App extends React.Component {
     fetch(`http://localhost:3002/api/data`)
       .then(res => res.json())
       .then(returned => this.setState({ loadedData: returned }));
-    console.log("display articles is working");
   };
 
   handleInputChange = event => {
@@ -43,17 +44,24 @@ class App extends React.Component {
     //get id of article from key attribute
     console.log(id); 
     fetch(`http://localhost:3002/api/data/${id}`)
-    .then(res => console.log(res));
+    .then(res => res.json())
+    // .then(test => console.log(test.comment.body, test.comment.author));
+    .then(returned => this.setState({ returnedAuthor: returned.comment.author, returnedComment: returned.comment.body}))
+    .catch(err => {
+        console.log(err);
+        this.setState({returnedAuthor: "no author", returnedComment: "no comment"});
+    })
   }
 
   addComment = id => {
-    const inputs = {author: this.state.author, body: this.state.comment}
+    const inputs = {author: this.state.author, body: this.state.comment};
+    console.log(inputs);
     const options = {
       headers: { "Content-Type": "application/json" },
       method: "POST",
       body: JSON.stringify(inputs)
     };
-    fetch(`http:localhost:3002/api/data/${id}`, options)
+    fetch(`http://localhost:3002/api/data/${id}`, options)
       .then(function(data) {
         console.log("Request success: ", data);
       })
@@ -78,7 +86,11 @@ class App extends React.Component {
             id={item._id}
             change={this.handleInputChange}
             comment={this.getComment}
-          />
+            addComment={this.addComment}
+            author={this.state.returnedAuthor}
+            body={this.state.returnedComment}
+          >
+          </Content>
         ))}
       </Wrapper>
     );
