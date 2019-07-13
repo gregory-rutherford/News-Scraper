@@ -6,7 +6,7 @@
   "scripts": {
     "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
     "start:prod": "NODE_ENV=production node Backend/Server.js",
-    "start:dev": "concurrently \"nodemon --ignore 'Frontend/news-scraper*'\" \"npm run Frontend\"",
+    "start:dev": "concurrently \"nodemon --ignore 'Frontend/news-scraper*'\"",
     "client": "cd Frontend/news-scraper && npm run start",
     "install": "cd Frontend/news-scraper && npm install",
     "build": "cd Frontend/news-scraper && npm run build",
