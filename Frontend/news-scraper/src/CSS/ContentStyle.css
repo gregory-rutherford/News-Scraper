@@ -8,10 +8,11 @@
 img {
     height: 250px;
     width: 300px;
+    border-radius: 50%;
 }
 
 table {
-    width: 400px;
-    height: 400px;
+    width: 375px;
+    height: 300px;
     border: 1px solid black;
 }

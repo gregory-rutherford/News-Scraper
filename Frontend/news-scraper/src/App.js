@@ -3,6 +3,7 @@ import Wrapper from "./Wrapper";
 import Content from "./Content";
 import ScrapeBtn from "./ScrapeBtn";
 import Header from "./Header";
+import CommentBox from "./CommentBox"
 
 class App extends React.Component {
   state = {
@@ -45,6 +46,7 @@ class App extends React.Component {
     console.log(id); 
     fetch(`http://localhost:3002/api/data/${id}`)
     .then(res => res.json())
+    // .then(test => console.log(test));
     // .then(test => console.log(test.comment.body, test.comment.author));
     .then(returned => this.setState({ returnedAuthor: returned.comment.author, returnedComment: returned.comment.body}))
     .catch(err => {
@@ -70,7 +72,6 @@ class App extends React.Component {
       });
   };
 
-  //write a function that grabs values from the text input, grabs the id of the selected article, and make a post to the db
 
   render() {
     return (
@@ -92,6 +93,10 @@ class App extends React.Component {
           >
           </Content>
         ))}
+        <CommentBox 
+        author={this.state.returnedAuthor}
+        body={this.state.returnedComment}
+        />
       </Wrapper>
     );
   }
