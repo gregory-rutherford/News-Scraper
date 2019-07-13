@@ -6,10 +6,10 @@
   "scripts": {
     "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
     "start:prod": "node server.js",
-    "start:dev": "concurrently \"nodemon --ignore 'Frontend/news-scraper/*'\" \"npm run Frontend\news-scraper\"",
-    "Frontend": "cd Frontend/news-scraper && npm run start",
-    "install": "cd Frontend/news-scraper && npm install",
-    "build": "cd Frontend/news-scraper && npm run build",
+    "start:dev": "concurrently \"nodemon --ignore 'Frontend/*'\" \"npm run Frontend\"",
+    "Frontend": "cd Frontend && npm run start",
+    "install": "cd Frontend && npm install",
+    "build": "cd Frontend && npm run build",
     "heroku-postbuild": "npm run build"
   },
   "repository": {
